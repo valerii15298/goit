@@ -1,10 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title><%= htmlWebpackPlugin.options.title %></title>
-  </head>
 
-  <body>
-    <div id="root"></div>
-  </body>
+<head>
+  <title>
+    <%= htmlWebpackPlugin.options.title %>
+  </title>
+  <style>
+    .imagesWrapper {
+      display: flex;
+    }
+
+    .imagesWrapper img {
+      width: 100px;
+      height: 100px;
+    }
+
+    .elem {
+      border-style: solid;
+    }
+
+    .cart {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      font-weight: 600;
+      font-size: xx-large;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <div class="cart"><button>Cart</button></div> -->
+  <div id="root"></div>
+</body>
+
 </html>

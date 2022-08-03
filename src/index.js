@@ -1,52 +1,83 @@
-// import validator from 'validator';
-import * as allFromHelpers from './helpers.js';
+import svg1 from "./images/1.svg";
+import svg2 from "./images/2.svg";
+import svg3 from "./images/3.svg";
 
-import * as lodash from "lodash";
+const CART_KEY = "CART_KEY";
 
-allFromHelpers.default()
-console.log(lodash.add(2, 1))
+const products = [svg1, svg2, svg3];
 
-// var validator = require('validator');
+const initialIds = products.map((_svgSrc, id) => id.toString());
 
-// console.log(validator.isEmail("validemail@gmail.com"))
 
-// const message = "Hello, world!";
-// console.log(message);
-
-// console.log(square(20))
-// allFromHelpers.default()
-// console.log(2)
-// Create heading node
-
-// Create a class property without a constructor
-import myImg from "./images/image1.jpg";
-import mySvg from "./images/some.svg";
-import './styles/main.scss';
-console.log(mySvg);
-
-class Game {
-    name = 'Violin Charades'
+function renderProducts(productIds) {
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("imagesWrapper")
+    wrapper.innerHTML = productIds.map((id) => `<div class="elem">
+<span> Product ${id}</span>
+<img src="${products[id]}"/>
+<button data-productId="${id}">Add to cart!</button>
+</div>`).join('');
+    return wrapper;
 }
-const myGame = new Game()
-// Create paragraph node
-const p = document.createElement('p')
-p.textContent = `I like ${myGame.name}.`
 
-const heading = document.createElement('h1')
-heading.textContent = 'Interesting!'
+const wrapper = renderProducts(initialIds);
+document.body.append(wrapper);
 
-// Append heading node to the DOM
-const app = document.querySelector('#root')
-app.append(heading)
+const cartDiv = document.createElement('div');
+document.body.append(cartDiv);
 
-// const imageElement = document.createElement("img");
-// imageElement.src = myImg;
-// document.body.append(imageElement);
+function renderCart() {
+    const existingDataList = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+    cartDiv.innerHTML = "";
+    cartDiv.append(renderProducts(existingDataList));
+}
 
-const mySvgImage = document.createElement("img");
-mySvgImage.src = mySvg;
-mySvgImage.style.width = "100px";
-mySvgImage.style.height = "200px";
-document.body.append(mySvgImage);
+wrapper.addEventListener("click", (e) => {
+    if (e.target.tagName !== "BUTTON") return;
 
-document.body.append("Some new text")
+    // BUTTON
+    const productId = e.target.dataset.productid;
+
+    const existingDataList = JSON.parse(localStorage.getItem(CART_KEY) || "[]")
+    if (existingDataList.includes(productId)) {
+        localStorage.setItem(CART_KEY,
+            JSON.stringify(existingDataList.filter(id => id !== productId)))
+    } else {
+        localStorage.setItem(CART_KEY,
+            JSON.stringify([...existingDataList, productId]))
+    }
+
+    renderCart();
+})
+
+renderCart();
+
+// Create app with products
+// App needs to have a cart where we can save products and persist
+
+//  JSON topic
+const jsonObj = {
+    name: "Josh",
+    "weight": 175,
+    "age": 30,
+    "eyecolor": "brown",
+    "isHappy": true,
+    "cars": ["Chevy", "Honda"],
+    "favoriteBook": {
+        "title": "The Last Kingdom",
+        "author": "Bernard Cornwell",
+        "rating": 8.38
+    }
+}
+
+const stringifiedObj = JSON.stringify(jsonObj);
+
+const parsedObj = JSON.parse(stringifiedObj);
+
+
+const OldJSON = jsonObj
+const str = JSON.stringify(JSON.parse(JSON.stringify(jsonObj)))
+// const deepCopy = { ...jsonObj }
+
+console.log(jsonObj === parsedObj);
+
