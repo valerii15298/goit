@@ -28,7 +28,7 @@ document.body.append(cartDiv);
 
 function renderCart() {
     const existingDataList = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
-    cartDiv.innerHTML = "";
+    cartDiv.innerHTML = `${existingDataList.length}`;
     cartDiv.append(renderProducts(existingDataList));
 }
 
